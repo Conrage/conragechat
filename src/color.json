@@ -1,0 +1,12 @@
+{
+        "lightPrimary":"rgb(255, 248, 244)",
+        "lightSecondary":"rgb(255, 242, 234)",
+        "darkPrimary":"rgb(231, 201, 183)",
+        "darkSecondary":"rgb(0, 242, 234)",
+        "white":"white",
+        "black":"black",
+        "invertWhite":"rgb(223, 223, 223)",
+        "background":"#202020",
+        "orange":"rgb(255, 112, 29)",
+        "blue":"#0384CF"
+}
