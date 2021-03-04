@@ -220,7 +220,7 @@ export default {
     }
   },
   created(){
-    this.socket = io('http://localhost:3000');
+    this.socket = io('https://serene-peak-70608.herokuapp.com/');
     this.socket.on('message',(data)=>{
         this.messages.push(data);
         if(data.id != this.id){

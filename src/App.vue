@@ -20,59 +20,19 @@ var firebaseConfig = {
     measurementId: "G-NPZ5SSMG4J"
   };
 export const firebase = !fb.apps.length ? fb.initializeApp(firebaseConfig) : fb.app();
-import io from 'socket.io-client';
 import '@firebase/firestore';
 export const db = firebase.firestore();
 export default {
   name: 'App',
   data(){
     return{
-      socket:{},
       messages:[],
       sendmessages:[],
       inputValue:"",
       id:1,
     }
   },
-  methods:{
-    sendMessage(){
-      var message = {
-        message:this.inputValue,
-        id:1,
-      }
-      this.scrollToElement();
-      this.storeHighScore(message);
-      this.socket.emit('message',message)
-    },
-    scrollToElement() {
-      if(this.$refs['message-container']){
-        const el = this.$refs['message-container'][this.$refs['message-container'].length -1];
-        console.log(el)
-        el.scrollIntoView({behavior: 'smooth'});
-      }
-    },
-    storeHighScore(message) {
-      db.collection('Users')
-      .doc('users')
-      .collection('messageHistory')
-      .add(message)
-    },
-  },
   created(){
-    db.collection('Users')
-      .doc('users')
-      .collection('messageHistory')
-      .get().then((data)=>{
-        for(var i = 0; i < data.docs.length; i++){
-          db.collection('Users')
-          .doc(firebase.auth().uid)
-          .collection('messageHistory')
-          .doc(data.docs[i].id)
-          .get().then((data)=>{
-            this.messages.push(data.data())
-          })
-        }
-      })
     if(firebase.auth().currentUser){
       this.$router.replace({
         name:"Home",
@@ -82,14 +42,6 @@ export default {
         name:"login",
       })
     }
-    this.socket = io('http://localhost:3000');
-    this.socket.on('message',(data)=>{
-        this.messages.push(data);
-        if(data.id != this.id){
-          this.storeHighScore(data)
-        }
-        this.scrollToElement();
-    })
   },
 }
 </script>
