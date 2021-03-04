@@ -19,4 +19,4 @@ npm run build
 ```
 npm run lint
 ```
-#Divirta-se!
+# Divirta-se!
