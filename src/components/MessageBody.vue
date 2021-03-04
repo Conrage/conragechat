@@ -1,5 +1,6 @@
 <template>
   <div class="left-side">
+    <a class="date-text">{{message.formatedData}}</a>
     <div class="message">
       <link rel="preconnect" href="https://fonts.gstatic.com">
       <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -22,6 +23,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .date-text{
+    color: rgb(66, 66, 66);
+    font-family: 'Poppins',sans-serif;
+    font-size: 10px;
+    margin-left: 10%;
+    font-weight: bold;
+  }
   .message{
     width:auto;
     display: flex;

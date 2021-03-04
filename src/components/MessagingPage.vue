@@ -44,7 +44,7 @@
     <div v-else-if="isChatting" class="messages-holder">
       <div class="send-message" @click="logout()">Sair</div>
       <div class="scrollstyle" ref="message-scroll" style="overflow:auto;width:100%;">
-        <div :ref="'message-container'" style="width:100%;" v-for="(data, index) in messages" :key="index">
+        <div :ref="'message-container'" style="width:100%;" v-for="(data, index) in sortedMessages" :key="index">
           <SendMessageBody v-if="data.from==id" :message="data"/>
           <MessageBody v-else :message="data"/>
         </div>
@@ -81,6 +81,7 @@ export default {
       socket:{},
       messages:[],
       sendmessages:[],
+      sortedMessages:[],
       inputValue:"",
       id:null,
       disabled:true,
@@ -97,7 +98,11 @@ export default {
         message:this.inputValue,
         from:this.id,
         to:this.currentChat,
+        createdAt:new Date(),
+        formatedData:new Date().getHours() + ":" + new Date().getMinutes(),
       }
+      this.messages.push(message);
+      this.messages.sort((a, b) => a.createdAt - b.createdAt);
       this.storeHighScore(message);
       this.socket.emit('message',message)
       this.inputValue = "";
@@ -135,6 +140,7 @@ export default {
     openChat(id){
       this.currentChat = id;
       this.messages = [];
+      this.sortedMessages = [];
       db.collection('Users').get()
       .then((data)=>{
         for(var i = 0; i < data.docs.length; i++){
@@ -145,10 +151,8 @@ export default {
             .where('to','==',this.currentUser.id)
             .get().then((datas)=>{
               for(var o = 0; o < datas.docs.length; o++){
-                if(datas.docs[o].data().from == id){
-                  console.log(datas.docs[o])
-                  this.messages.push(datas.docs[o].data());
-                }
+                console.log(' > [user] '+datas.docs[o].data().message)
+                this.messages.push(datas.docs[o].data());
               }
             })
           }
@@ -162,12 +166,15 @@ export default {
             console.log(datas)
             for(var o = 0; o < datas.docs.length; o++){
               if(datas.docs[o].data().from == this.currentUser.id){
-                
                 this.messages.push(datas.docs[o].data());
               }
             }
           })
-      this.isChatting = true
+      this.sortedMessages = this.messages.sort(function(x, y){
+          return x.createdAt - y.createdAt;
+      });
+      console.log(this.sortedMessages)
+      this.isChatting = true;
     },
     logout(){
       firebase.auth().signOut().then(() => {
@@ -221,10 +228,9 @@ export default {
   },
   created(){
     this.socket = io('https://serene-peak-70608.herokuapp.com/');
-    this.socket.on('message',(data)=>{
-        this.messages.push(data);
-        if(data.id != this.id){
-          this.storeHighScore(data)
+    this.socket.on('message',(data)=>{   
+        if(data.from != this.id){
+          this.messages.push(data);
         }
     })
   },
