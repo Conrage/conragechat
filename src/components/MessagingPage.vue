@@ -229,7 +229,7 @@ export default {
   created(){
     this.socket = io('https://serene-peak-70608.herokuapp.com/');
     this.socket.on('message',(data)=>{   
-        if(data.from != this.id){
+        if(data.from == this.currentChat && data.to == this.id){
           this.messages.push(data);
         }
     })
