@@ -264,6 +264,7 @@ export default {
 .icon-aligner{
   width:100%;
   margin-left:5%;
+  position: relative;
   display: flex;
   align-items: center;
 }
@@ -418,6 +419,7 @@ body{
   height: 99.5%;
   background-color: var(--main-color);
   border:2px solid rgb(252, 158, 103);
+  overflow-y: scroll;
 }
 .left-side{
   width: 100%;

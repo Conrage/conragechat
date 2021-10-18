@@ -43,6 +43,7 @@ export default {
   }
   .message-text{
     white-space: pre-wrap;
+    font-size: 1.5em;
     color: var(--manterblack);
     font-family: 'Open Sans',sans-serif;
   }

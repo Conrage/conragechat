@@ -44,6 +44,7 @@ export default {
   }
   .message-text{
     color: black;
+    font-size: 1.5em;
     font-family: 'Open Sans',sans-serif;
   }
 </style>
